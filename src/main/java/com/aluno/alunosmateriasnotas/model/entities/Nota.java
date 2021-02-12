@@ -22,6 +22,7 @@ public class Nota {
     public Nota() {
     }
 
+
     public Nota(double nota1, double nota2, double nota3, double nota4) {
         this.nota1 = nota1;
         this.nota2 = nota2;

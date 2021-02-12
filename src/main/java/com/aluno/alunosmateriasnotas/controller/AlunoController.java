@@ -30,8 +30,10 @@ public class AlunoController {
     }
 
 
-    @RequestMapping(value = "/novo", method = RequestMethod.POST)
-    public @ResponseBody Aluno novoAluno(Aluno aluno){
+    @RequestMapping(value = "/novo",
+            method = RequestMethod.POST)
+    public @ResponseBody
+    Aluno novoAluno(Aluno aluno){
        alunoRepository.save(aluno);
         return aluno;
     }

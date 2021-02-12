@@ -19,10 +19,14 @@ public class Materia {
     private String nome;
 
     @OneToMany
-//    @JoinColumn(name = "nota_id")
     private List<Nota> notas;
 
     public Materia() {
+    }
+
+    public Materia(Long id, String nome) {
+        this.id = id;
+        this.nome = nome;
     }
 
     public Materia(Long id, String nome, List<Nota> notas) {

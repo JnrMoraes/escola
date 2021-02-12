@@ -16,7 +16,6 @@ public class Aluno {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     private String nome;
 
     @OneToMany
@@ -28,5 +27,11 @@ public class Aluno {
     public Aluno(Long id, String nome) {
         this.id = id;
         this.nome = nome;
+    }
+
+    public Aluno(Long id, String nome, List<Materia> materias) {
+        this.id = id;
+        this.nome = nome;
+        this.materias = materias;
     }
 }

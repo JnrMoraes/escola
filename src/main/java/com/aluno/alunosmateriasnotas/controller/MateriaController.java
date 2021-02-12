@@ -4,6 +4,7 @@ import com.aluno.alunosmateriasnotas.model.entities.Materia;
 import com.aluno.alunosmateriasnotas.repositories.MateriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,8 +30,10 @@ public class MateriaController {
         return materiaRepository.findAll();
     }
 
-    @RequestMapping(value = "/nova", method = RequestMethod.POST)
-    public @ResponseBody Materia novaMateria(Materia materia){
+    @PostMapping
+    @RequestMapping(value = "/nova")
+    public @ResponseBody
+    Materia novoAluno(Materia materia) {
         materiaRepository.save(materia);
         return materia;
     }
