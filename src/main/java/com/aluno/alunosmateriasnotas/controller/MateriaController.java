@@ -45,7 +45,7 @@ public class MateriaController {
     }
 
     @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
-    public void deleteMateria(@PathVariable Long id){
+    public void deletarMateria(@PathVariable Long id){
         materiaRepository.deleteById(id);
     }
 

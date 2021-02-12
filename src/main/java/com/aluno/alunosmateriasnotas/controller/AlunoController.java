@@ -45,7 +45,7 @@ public class AlunoController {
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
-    public void deleteAluno(@PathVariable Long id){
+    public void deletarAluno(@PathVariable Long id){
         alunoRepository.deleteById(id);
     }
 
