@@ -22,4 +22,9 @@ public class NotaController {
         notaRepository.save(nota);
         return nota;
     }
+
+    @RequestMapping(value = "/all")
+    public Iterable<Nota> getNotas(){
+        return notaRepository.findAll();
+    }
 }
