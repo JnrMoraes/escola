@@ -1,0 +1,29 @@
+Inseri uma Matéria com nota nula
+
+{
+    "nome": "Português",
+    "notas": null
+}
+,
+{
+    "nome": "Matemática",
+    "notas": null
+}
+,
+{
+    "nome": "Biologia",
+    "notas": null
+}
+
+
+
+Inserir Aluno e mateira com seu Id
+
+{
+    "nome":"Jader",
+    "materias":[
+        {
+            "id": 1
+        }
+    ]
+}
