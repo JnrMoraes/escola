@@ -8,9 +8,9 @@ public interface IAlunoService {
 
     Boolean cadastrarAluno(AlunoDto aluno);
 
-    List<AlunoDto> buscarAlunoS();
+    List<AlunoDto> consultarAlunos();
 
-    AlunoDto buscarAlunoPeloId(Long id);
+    AlunoDto consultarAlunoPeloId(Long id);
 
     Boolean alterarAluno(AlunoDto aluno);
 

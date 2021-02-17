@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -25,7 +26,7 @@ public class AlunoController {
     private IAlunoService alunoService;
 
     @PostMapping
-    public ResponseEntity<Boolean> cadastrarAluno(@RequestBody AlunoDto aluno) {
+    public ResponseEntity<Boolean> cadastrarAluno(@Valid @RequestBody AlunoDto aluno) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(this.alunoService.cadastrarAluno(aluno));
     }
@@ -33,14 +34,14 @@ public class AlunoController {
     @GetMapping
     public ResponseEntity<List<AlunoDto>> getAlunoS() {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(alunoService.buscarAlunoS());
+                .body(alunoService.consultarAlunos());
     }
 
     @GetMapping("/{id}")
     public @ResponseBody
     ResponseEntity<AlunoDto> alunoById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(this.alunoService.buscarAlunoPeloId(id));
+                .body(this.alunoService.consultarAlunoPeloId(id));
     }
 
     @PutMapping

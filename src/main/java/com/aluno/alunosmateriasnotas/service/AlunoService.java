@@ -10,75 +10,87 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AlunoService implements IAlunoService{
+public class AlunoService implements IAlunoService {
+
+    private final AlunoRepository alunoRepository;
+    private final ModelMapper mapper;
+
+    private static final String MENSAGEM_ERRO = "Erro interno";
+    private static final String ALUNO_NAO_ENCONTRADO = "Aluno não encontrado";
 
     @Autowired
-    private AlunoRepository alunoRepository;
+    public AlunoService(AlunoRepository alunoRepository) {
+        this.alunoRepository = alunoRepository;
+        this.mapper = new ModelMapper();
+    }
 
     @Override
     public Boolean cadastrarAluno(AlunoDto aluno) {
-        ModelMapper mapper = new ModelMapper();
-        Aluno alunoEntity = mapper.map(aluno, Aluno.class);
-
-        this.alunoRepository.save(alunoEntity);
-        return true;
-    }
-
-    @Override
-    public List<AlunoDto> buscarAlunoS() {
-         try{
-             ModelMapper mapper = new ModelMapper();
-
-             return mapper.map(this.alunoRepository.findAll(), new TypeToken<List<AlunoDto>>() {}.getType());
-
-         } catch (Exception e){
-             return new ArrayList<>();
-         }
-    }
-
-    @Override
-    public AlunoDto buscarAlunoPeloId(Long id) {
         try {
-            ModelMapper mapper = new ModelMapper();
+            Aluno alunoEntity = this.mapper.map(aluno, Aluno.class);
+            this.alunoRepository.save(alunoEntity);
+            return Boolean.TRUE;
+        } catch (Exception e) {
+            throw new AlunoException(MENSAGEM_ERRO,
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public List<AlunoDto> consultarAlunos() {
+        try {
+            return this.mapper.map(this.alunoRepository.findAll(), new TypeToken<List<AlunoDto>>() {
+            }.getType());
+
+        } catch (Exception e) {
+            throw new AlunoException(MENSAGEM_ERRO,
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public AlunoDto consultarAlunoPeloId(Long id) {
+        try {
             Optional<Aluno> alunoOptional = this.alunoRepository.findById(id);
 
-            if(alunoOptional.isPresent()){
+            if (alunoOptional.isPresent()) {
 
-                return mapper.map(alunoOptional.get(), AlunoDto.class);
+                return this.mapper.map(alunoOptional.get(), AlunoDto.class);
 
             }
-            throw new AlunoException("Aluno não encontrado", HttpStatus.NOT_FOUND);
+            throw new AlunoException(ALUNO_NAO_ENCONTRADO,
+                    HttpStatus.NOT_FOUND);
 
-        } catch (AlunoException exception){
+        } catch (AlunoException exception) {
             throw exception;
 
-        } catch (Exception exception){
-            throw new AlunoException("Erro interno", HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception exception) {
+            throw new AlunoException(MENSAGEM_ERRO,
+                    HttpStatus.INTERNAL_SERVER_ERROR);
 
         }
     }
 
     @Override
     public Boolean alterarAluno(AlunoDto aluno) {
-        try{
+        try {
 
-            this.buscarAlunoPeloId(aluno.getId());
-            ModelMapper mapper = new ModelMapper();
-            Aluno alunoAtualizado = mapper.map(aluno, Aluno.class);
+            this.consultarAlunoPeloId(aluno.getId());
+
+            Aluno alunoAtualizado = this.mapper.map(aluno, Aluno.class);
 
             this.alunoRepository.save(alunoAtualizado);
 
             return Boolean.TRUE;
 
-        } catch (AlunoException exception){
+        } catch (AlunoException exception) {
             throw exception;
 
-        } catch (Exception exception){
+        } catch (Exception exception) {
             throw exception;
 
         }
@@ -87,18 +99,18 @@ public class AlunoService implements IAlunoService{
     @Override
     public Boolean excluirAluno(Long id) {
 
-       try{
-           this.buscarAlunoPeloId(id);
-           this.alunoRepository.deleteById(id);
-           return Boolean.TRUE;
+        try {
+            this.consultarAlunoPeloId(id);
+            this.alunoRepository.deleteById(id);
+            return Boolean.TRUE;
 
-       } catch (AlunoException exception){
-           throw exception;
+        } catch (AlunoException e) {
+            throw e;
 
-       } catch (Exception exception){
-           throw exception;
+        } catch (Exception e) {
+            throw e;
 
-       }
+        }
     }
 
 }
