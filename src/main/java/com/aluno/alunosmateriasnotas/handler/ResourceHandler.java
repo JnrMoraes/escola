@@ -1,10 +1,7 @@
 package com.aluno.alunosmateriasnotas.handler;
 
 import com.aluno.alunosmateriasnotas.exception.AlunoException;
-import com.aluno.alunosmateriasnotas.model.ErrorMapResponse;
-import com.aluno.alunosmateriasnotas.model.ErrorMapResponse.ErrorMapResponseBuilder;
-import com.aluno.alunosmateriasnotas.model.ErrorResponse;
-import com.aluno.alunosmateriasnotas.model.ErrorResponse.ErrorResponseBuilder;
+import com.aluno.alunosmateriasnotas.model.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -19,7 +16,7 @@ import java.util.Map;
 public class ResourceHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorMapResponse> handlerMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
+    public ResponseEntity<Response<Map<String, String>>> handlerMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
         Map<String, String> error = new HashMap<>();
 
         exception.getBindingResult().getAllErrors()
@@ -29,28 +26,21 @@ public class ResourceHandler {
                     error.put(campo, mensagem);
                 });
 
-//        for (ObjectError erro : exception.getBindingResult().getAllErrors()) {
-//            String campo = ((FieldError) erro).getField();
-//            String mensagem = erro.getDefaultMessage();
-//            error.put(campo, mensagem);
-//    }
-
-        ErrorMapResponseBuilder erroMap = ErrorMapResponse.builder();
-        erroMap.erros(error)
-                .httpStatus(HttpStatus.BAD_REQUEST.value())
-                .timeStamp(System.currentTimeMillis());
+        Response<Map<String, String>> response = new Response<>();
+        response.setStatusCode(HttpStatus.BAD_REQUEST.value());
+        response.setData(error);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(erroMap.build());
+                .body(response);
     }
 
 
     @ExceptionHandler(AlunoException.class)
-    public ResponseEntity<ErrorResponse> handlerAlunoException(AlunoException exception) {
-        ErrorResponseBuilder erro = ErrorResponse.builder();
-        erro.httpStatus(exception.getHttpStatus().value());
-        erro.mensagem(exception.getMessage());
-        erro.timeStamp(System.currentTimeMillis());
+    public ResponseEntity<Response<String>> handlerAlunoException(AlunoException exception) {
+        Response<String> response = new Response<>();
+        response.setStatusCode(exception.getHttpStatus().value());
+        response.setData(exception.getMessage());
+
         return ResponseEntity.status(exception.getHttpStatus())
-                .body(erro.build());
+                .body(response);
     }
 }
