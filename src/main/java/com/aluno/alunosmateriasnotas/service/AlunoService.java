@@ -1,5 +1,6 @@
 package com.aluno.alunosmateriasnotas.service;
 
+import com.aluno.alunosmateriasnotas.controller.AlunoController;
 import com.aluno.alunosmateriasnotas.dto.AlunoDto;
 import com.aluno.alunosmateriasnotas.entity.Aluno;
 import com.aluno.alunosmateriasnotas.exception.AlunoException;
@@ -7,12 +8,18 @@ import com.aluno.alunosmateriasnotas.rest.AlunoRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@CacheConfig(cacheNames = "aluno")
 @Service
 public class AlunoService implements IAlunoService {
 
@@ -40,11 +47,50 @@ public class AlunoService implements IAlunoService {
         }
     }
 
+    // utilizando para mais atributos
+//    @Caching(evict = {
+//            @CacheEvict(value = "aluno", key = "#aluno.id"),
+//            @CacheEvict(value = "materia", key = "#aluno.id")
+//    }
+//    )
+    @CacheEvict(key = "#aluno.id")
+    @Override
+    public Boolean alterarAluno(AlunoDto aluno) {
+        try {
+
+            this.consultarAlunoPeloId(aluno.getId());
+
+            Aluno alunoAtualizado = this.mapper.map(aluno, Aluno.class);
+
+            this.alunoRepository.save(alunoAtualizado);
+
+            return Boolean.TRUE;
+
+        } catch (AlunoException exception) {
+            throw exception;
+
+        } catch (Exception exception) {
+            throw exception;
+
+        }
+    }
+
+    @CachePut(unless = "#result.size()<3")
     @Override
     public List<AlunoDto> consultarAlunos() {
         try {
-            return this.mapper.map(this.alunoRepository.findAll(), new TypeToken<List<AlunoDto>>() {
-            }.getType());
+            List<AlunoDto> alunoDto = this.mapper.map(this.alunoRepository.findAll(),
+                    new TypeToken<List<AlunoDto>>() {
+                    }.getType());
+
+            alunoDto.forEach(aluno ->
+                    aluno.add(WebMvcLinkBuilder
+                        .linkTo(WebMvcLinkBuilder
+                        .methodOn(AlunoController.class)
+                        .alunoById(aluno.getId()))
+                        .withSelfRel()));
+
+            return alunoDto;
 
         } catch (Exception e) {
             throw new AlunoException(MENSAGEM_ERRO,
@@ -52,6 +98,7 @@ public class AlunoService implements IAlunoService {
         }
     }
 
+    @Cacheable(key = "#id")
     @Override
     public AlunoDto consultarAlunoPeloId(Long id) {
         try {
@@ -71,27 +118,6 @@ public class AlunoService implements IAlunoService {
         } catch (Exception exception) {
             throw new AlunoException(MENSAGEM_ERRO,
                     HttpStatus.INTERNAL_SERVER_ERROR);
-
-        }
-    }
-
-    @Override
-    public Boolean alterarAluno(AlunoDto aluno) {
-        try {
-
-            this.consultarAlunoPeloId(aluno.getId());
-
-            Aluno alunoAtualizado = this.mapper.map(aluno, Aluno.class);
-
-            this.alunoRepository.save(alunoAtualizado);
-
-            return Boolean.TRUE;
-
-        } catch (AlunoException exception) {
-            throw exception;
-
-        } catch (Exception exception) {
-            throw exception;
 
         }
     }
