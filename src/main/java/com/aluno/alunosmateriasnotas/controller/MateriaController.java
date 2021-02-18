@@ -45,13 +45,30 @@ public class MateriaController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Materia>> buscarMateriaPeloId(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(this.materiaRepository.findById(id));
+        try {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(this.materiaRepository.findById(id));
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(this.materiaRepository.findById(id));
+        }
     }
 
     @PutMapping
-    public ResponseEntity<Void> alterarMateria() {
-        throw new NotYetImplementedException();
+    public ResponseEntity<Boolean> alterarMateria(@RequestBody Materia materia) {
+        try {
+            Materia materiaAtualizada = this.materiaRepository.findById(materia.getId()).get();
+            materiaAtualizada.setNome(materia.getNome());
+            this.materiaRepository.save(materiaAtualizada);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(true);
+
+        } catch (Exception e) {
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(false);
+        }
     }
 
     @DeleteMapping("/{id}")
