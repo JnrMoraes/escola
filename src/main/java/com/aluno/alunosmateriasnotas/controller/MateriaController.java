@@ -2,7 +2,6 @@ package com.aluno.alunosmateriasnotas.controller;
 
 import com.aluno.alunosmateriasnotas.entity.Materia;
 import com.aluno.alunosmateriasnotas.rest.client.MateriaRepository;
-import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -72,8 +71,17 @@ public class MateriaController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletarMateria() {
-        throw new NotYetImplementedException();
+    public ResponseEntity<Boolean> deletarMateria(@PathVariable Long id) {
+        try {
+            this.materiaRepository.deleteById(id);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(true);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(false);
+
+        }
     }
 
 }
