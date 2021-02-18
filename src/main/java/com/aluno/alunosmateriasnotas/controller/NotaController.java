@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/nota")
 public class NotaController {
@@ -32,8 +34,10 @@ public class NotaController {
         }
     }
     @GetMapping
-    public ResponseEntity<Void> buscarTodasNota() {
-        throw new NotYetImplementedException();
+    public ResponseEntity<List<Nota>> buscarTodasNota() {
+       return ResponseEntity.status(HttpStatus.OK)
+               .body(this.notaRepository.findAll());
+
     }
     @GetMapping("/{id}")
     public ResponseEntity<Void> bucarNotaPorId() {
