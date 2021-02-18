@@ -31,7 +31,6 @@ Inserir Aluno e mateira com seu Id
 Inserir notas
 
 {
-
     "bimetre1":[7.9, 7.5, 8.9, 5.7],
     "bimetre2":[9.5, 8.5, 5.7, 7.9],
     "bimetre3":[5.6, 7.8, 4.6, 9.5],
@@ -41,5 +40,18 @@ Inserir notas
     "mediaBimentre3":8,
     "mediaBimentre4":5,
     "mediaFinal": 7.8
+
+}
+
+{
+    "bimetre1":[7.9, 9.5, 8.9, 5.7],
+    "bimetre2":[],
+    "bimetre3":[],
+    "bimetre4":[],
+    "mediaBimentre1":9,
+    "mediaBimentre2":null,
+    "mediaBimentre3":null,
+    "mediaBimentre4":null,
+    "mediaFinal": 9
 
 }
