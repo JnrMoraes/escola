@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/materia")
@@ -42,9 +44,9 @@ public class MateriaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Void> buscarMateriaPeloId() {
-
-        throw new NotYetImplementedException();
+    public ResponseEntity<Optional<Materia>> buscarMateriaPeloId(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(this.materiaRepository.findById(id));
     }
 
     @PutMapping
