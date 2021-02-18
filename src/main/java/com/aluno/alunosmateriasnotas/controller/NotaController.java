@@ -2,7 +2,6 @@ package com.aluno.alunosmateriasnotas.controller;
 
 import com.aluno.alunosmateriasnotas.entity.Nota;
 import com.aluno.alunosmateriasnotas.rest.client.INotaRepository;
-import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -82,7 +81,15 @@ public class NotaController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletarNota() {
-        throw new NotYetImplementedException();
+    public ResponseEntity<Boolean> deletarNota(@PathVariable Long id) {
+        try {
+            this.notaRepository.deleteById(id);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(true);
+
+        } catch (Exception e) {
+            throw e;
+
+        }
     }
 }
