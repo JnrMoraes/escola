@@ -4,7 +4,8 @@ import com.aluno.alunosmateriasnotas.controller.AlunoController;
 import com.aluno.alunosmateriasnotas.dto.AlunoDto;
 import com.aluno.alunosmateriasnotas.entity.Aluno;
 import com.aluno.alunosmateriasnotas.exception.AlunoException;
-import com.aluno.alunosmateriasnotas.rest.AlunoRepository;
+import com.aluno.alunosmateriasnotas.rest.client.IAlunoRepository;
+import com.aluno.alunosmateriasnotas.rest.client.MateriaRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +24,19 @@ import java.util.Optional;
 @Service
 public class AlunoService implements IAlunoService {
 
-    private final AlunoRepository alunoRepository;
+    private IAlunoRepository IAlunoRepository;
+
+    private MateriaRepository materiaRepository;
+
     private final ModelMapper mapper;
 
     private static final String MENSAGEM_ERRO = "Erro interno";
     private static final String ALUNO_NAO_ENCONTRADO = "Aluno não encontrado";
 
     @Autowired
-    public AlunoService(AlunoRepository alunoRepository) {
-        this.alunoRepository = alunoRepository;
+    public AlunoService(IAlunoRepository IAlunoRepository, MateriaRepository materiaRepository) {
+        this.IAlunoRepository = IAlunoRepository;
+        this.materiaRepository = materiaRepository;
         this.mapper = new ModelMapper();
     }
 
@@ -39,7 +44,7 @@ public class AlunoService implements IAlunoService {
     public Boolean cadastrarAluno(AlunoDto aluno) {
         try {
             Aluno alunoEntity = this.mapper.map(aluno, Aluno.class);
-            this.alunoRepository.save(alunoEntity);
+            this.IAlunoRepository.save(alunoEntity);
             return Boolean.TRUE;
         } catch (Exception e) {
             throw new AlunoException(MENSAGEM_ERRO,
@@ -62,7 +67,7 @@ public class AlunoService implements IAlunoService {
 
             Aluno alunoAtualizado = this.mapper.map(aluno, Aluno.class);
 
-            this.alunoRepository.save(alunoAtualizado);
+            this.IAlunoRepository.save(alunoAtualizado);
 
             return Boolean.TRUE;
 
@@ -79,7 +84,7 @@ public class AlunoService implements IAlunoService {
     @Override
     public List<AlunoDto> consultarAlunos() {
         try {
-            List<AlunoDto> alunoDto = this.mapper.map(this.alunoRepository.findAll(),
+            List<AlunoDto> alunoDto = this.mapper.map(this.IAlunoRepository.findAll(),
                     new TypeToken<List<AlunoDto>>() {
                     }.getType());
 
@@ -87,7 +92,7 @@ public class AlunoService implements IAlunoService {
                     aluno.add(WebMvcLinkBuilder
                         .linkTo(WebMvcLinkBuilder
                         .methodOn(AlunoController.class)
-                        .alunoById(aluno.getId()))
+                        .buscarAlunoPorId(aluno.getId()))
                         .withSelfRel()));
 
             return alunoDto;
@@ -102,7 +107,7 @@ public class AlunoService implements IAlunoService {
     @Override
     public AlunoDto consultarAlunoPeloId(Long id) {
         try {
-            Optional<Aluno> alunoOptional = this.alunoRepository.findById(id);
+            Optional<Aluno> alunoOptional = this.IAlunoRepository.findById(id);
 
             if (alunoOptional.isPresent()) {
 
@@ -127,7 +132,7 @@ public class AlunoService implements IAlunoService {
 
         try {
             this.consultarAlunoPeloId(id);
-            this.alunoRepository.deleteById(id);
+            this.IAlunoRepository.deleteById(id);
             return Boolean.TRUE;
 
         } catch (AlunoException e) {

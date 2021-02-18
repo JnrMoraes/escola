@@ -29,6 +29,7 @@ public class AlunoController {
     @Autowired
     private IAlunoService alunoService;
 
+
     @PostMapping
     public ResponseEntity<Boolean> cadastrarAluno(@Valid @RequestBody AlunoDto aluno) {
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -36,26 +37,26 @@ public class AlunoController {
     }
 
     @GetMapping
-    public ResponseEntity<Response<List<AlunoDto>>> getAlunoS() {
+    public ResponseEntity<Response<List<AlunoDto>>> buscarTodosAlunos() {
         Response<List<AlunoDto>> response = new Response<>();
         response.setData(this.alunoService.consultarAlunos());
         response.setStatusCode(HttpStatus.OK.value());
         response.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder
                 .methodOn(AlunoController.class)
-                .getAlunoS()).withSelfRel());
+                .buscarTodosAlunos()).withSelfRel());
         return ResponseEntity.status(HttpStatus.OK)
                 .body(response);
     }
 
     @GetMapping("/{id}")
     public @ResponseBody
-    ResponseEntity<Response<AlunoDto>> alunoById(@PathVariable Long id) {
+    ResponseEntity<Response<AlunoDto>> buscarAlunoPorId(@PathVariable Long id) {
         Response<AlunoDto> response = new Response<>();
         response.setData(this.alunoService.consultarAlunoPeloId(id));
         response.setStatusCode(HttpStatus.OK.value());
         response.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder
                 .methodOn(AlunoController.class)
-                .alunoById(id)).withSelfRel());
+                .buscarAlunoPorId(id)).withSelfRel());
         response.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder
                 .methodOn(AlunoController.class)
                 .deletarAluno(id)).withRel(DELETE));

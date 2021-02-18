@@ -16,10 +16,9 @@ import java.util.List;
 @Data
 @Entity
 @NoArgsConstructor
-public class Aluno implements Serializable {
+public class Materia implements Serializable {
 
-
-    private static final long serialVersionUID = 837052379084307171L;
+    private static final long serialVersionUID = 4715077195893680902L;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @Id
@@ -29,17 +28,13 @@ public class Aluno implements Serializable {
     private String nome;
 
     @OneToMany
-    @JoinColumn(name = "materia_id")
-    private List<Materia> materias;
+    @JoinColumn(name = "nota_id")
+    private List<Nota> nota;
 
-    public Aluno(Long id, String nome) {
+
+    public Materia(Long id, String nome) {
         this.id = id;
         this.nome = nome;
     }
 
-//    public Aluno(Long id, String nome, List<Materia> materias) {
-//        this.id = id;
-//        this.nome = nome;
-//        this.materias = materias;
-//    }
 }
