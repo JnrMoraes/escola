@@ -5,7 +5,7 @@ import com.aluno.alunosmateriasnotas.dto.AlunoDto;
 import com.aluno.alunosmateriasnotas.entity.Aluno;
 import com.aluno.alunosmateriasnotas.exception.AlunoException;
 import com.aluno.alunosmateriasnotas.rest.client.IAlunoRepository;
-import com.aluno.alunosmateriasnotas.rest.client.MateriaRepository;
+import com.aluno.alunosmateriasnotas.rest.client.IMateriaRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class AlunoService implements IAlunoService {
 
     private IAlunoRepository IAlunoRepository;
 
-    private MateriaRepository materiaRepository;
+    private IMateriaRepository IMateriaRepository;
 
     private final ModelMapper mapper;
 
@@ -34,9 +34,9 @@ public class AlunoService implements IAlunoService {
     private static final String ALUNO_NAO_ENCONTRADO = "Aluno não encontrado";
 
     @Autowired
-    public AlunoService(IAlunoRepository IAlunoRepository, MateriaRepository materiaRepository) {
+    public AlunoService(IAlunoRepository IAlunoRepository, IMateriaRepository IMateriaRepository) {
         this.IAlunoRepository = IAlunoRepository;
-        this.materiaRepository = materiaRepository;
+        this.IMateriaRepository = IMateriaRepository;
         this.mapper = new ModelMapper();
     }
 

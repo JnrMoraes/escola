@@ -1,7 +1,7 @@
 package com.aluno.alunosmateriasnotas.controller;
 
 import com.aluno.alunosmateriasnotas.entity.Materia;
-import com.aluno.alunosmateriasnotas.rest.client.MateriaRepository;
+import com.aluno.alunosmateriasnotas.rest.client.IMateriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +23,7 @@ import java.util.Optional;
 public class MateriaController {
 
     @Autowired
-    private MateriaRepository materiaRepository;
+    private IMateriaRepository materiaRepository;
 
     @PostMapping
     public ResponseEntity<Materia> cadastrarMateria(@Valid @RequestBody Materia materia) {
