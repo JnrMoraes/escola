@@ -8,11 +8,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 @Data
 @Entity
 @NoArgsConstructor
-public class Nota {
+public class Nota implements Serializable {
+
+    private static final long serialVersionUID = -7643588615680737504L;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @Id

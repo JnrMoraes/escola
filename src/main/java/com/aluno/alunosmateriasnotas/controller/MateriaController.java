@@ -26,11 +26,11 @@ public class MateriaController {
     private IMateriaRepository materiaRepository;
 
     @PostMapping
-    public ResponseEntity<Materia> cadastrarMateria(@Valid @RequestBody Materia materia) {
+    public ResponseEntity<Boolean> cadastrarMateria(@Valid @RequestBody Materia materia) {
         try {
             this.materiaRepository.save(materia);
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(materia);
+                    .body(true);
         } catch (Exception e) {
             throw e;
         }
