@@ -38,7 +38,7 @@ public class MateriaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Materia>> buscarTodasMaterias() {
+    public ResponseEntity<List<MateriaDto>> buscarTodasMaterias() {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(this.materiaService.consultarMaterias());
     }

@@ -1,7 +1,6 @@
 package com.aluno.alunosmateriasnotas.service;
 
 import com.aluno.alunosmateriasnotas.dto.MateriaDto;
-import com.aluno.alunosmateriasnotas.entity.Materia;
 
 import java.util.List;
 
@@ -9,9 +8,9 @@ public interface IMateriaService {
 
     Boolean cadastrarMateria(MateriaDto materia);
 
-    List<Materia> consultarMaterias();
+    List<MateriaDto> consultarMaterias();
 
-    Materia consultarMateriaPeloId(Long id);
+    MateriaDto consultarMateriaPeloId(Long id);
 
     Boolean alterarMateria(MateriaDto materia);
 

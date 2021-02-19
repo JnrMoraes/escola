@@ -7,6 +7,7 @@ import com.aluno.alunosmateriasnotas.exception.MateriaException;
 import com.aluno.alunosmateriasnotas.rest.client.IMateriaRepository;
 import org.hibernate.cfg.NotYetImplementedException;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -41,9 +42,11 @@ public class MateriaService implements IMateriaService {
     }
 
     @Override
-    public List<Materia> consultarMaterias() {
+    public List<MateriaDto> consultarMaterias() {
         try {
-            return this.materiaRepository.findAll();
+
+           return this.mapper.map(this.materiaRepository.findAll(),
+                   new TypeToken<MateriaDto>() {}.getType()) ;
 
         } catch (MateriaException e) {
             throw new MateriaException(MensagensConstant.ERRO_GENERICO.getValor(),
@@ -52,7 +55,7 @@ public class MateriaService implements IMateriaService {
     }
 
     @Override
-    public Materia consultarMateriaPeloId(Long id) {
+    public MateriaDto consultarMateriaPeloId(Long id) {
         throw new NotYetImplementedException();
     }
 
