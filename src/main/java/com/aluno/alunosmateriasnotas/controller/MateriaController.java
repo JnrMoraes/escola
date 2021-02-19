@@ -1,7 +1,9 @@
 package com.aluno.alunosmateriasnotas.controller;
 
+import com.aluno.alunosmateriasnotas.dto.MateriaDto;
 import com.aluno.alunosmateriasnotas.entity.Materia;
 import com.aluno.alunosmateriasnotas.rest.client.IMateriaRepository;
+import com.aluno.alunosmateriasnotas.service.IMateriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,18 +24,18 @@ import java.util.Optional;
 @RequestMapping("/materia")
 public class MateriaController {
 
+    // retirar o repository quando finalizar de refatorar
     @Autowired
     private IMateriaRepository materiaRepository;
 
+    @Autowired
+    private IMateriaService materiaService;
+
     @PostMapping
-    public ResponseEntity<Boolean> cadastrarMateria(@Valid @RequestBody Materia materia) {
-        try {
-            this.materiaRepository.save(materia);
+    public ResponseEntity<Boolean> cadastrarMateria(@Valid @RequestBody MateriaDto materia) {
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(true);
-        } catch (Exception e) {
-            throw e;
-        }
+                    .body(this.materiaService.cadastrarMateria(materia));
+
     }
 
     @GetMapping

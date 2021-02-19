@@ -1,18 +1,19 @@
 package com.aluno.alunosmateriasnotas.service;
 
-import com.aluno.alunosmateriasnotas.dto.AlunoDto;
+import com.aluno.alunosmateriasnotas.dto.MateriaDto;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 public interface IMateriaService {
 
-    Boolean cadastrarMateria(AlunoDto aluno);
+    Boolean cadastrarMateria(MateriaDto materia);
 
-    List<AlunoDto> consultarMaterias();
+    List<MateriaDto> consultarMaterias();
 
-    AlunoDto consultarMateriaPeloId(Long id);
+    MateriaDto consultarMateriaPeloId(Long id);
 
-    Boolean alterarMateria(AlunoDto aluno);
+    Boolean alterarMateria(MateriaDto materia);
 
     Boolean excluirMateria(Long id);
 
