@@ -5,7 +5,6 @@ import com.aluno.alunosmateriasnotas.entity.Materia;
 import com.aluno.alunosmateriasnotas.entity.enums.MensagensConstant;
 import com.aluno.alunosmateriasnotas.exception.MateriaException;
 import com.aluno.alunosmateriasnotas.rest.client.IMateriaRepository;
-import org.hibernate.cfg.NotYetImplementedException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,7 +90,15 @@ public class MateriaService implements IMateriaService {
 
     @Override
     public Boolean excluirMateria(Long id) {
-        throw new NotYetImplementedException();
+        try {
+            this.materiaRepository.deleteById(id);
+            return Boolean.TRUE;
+
+        } catch (MateriaException e) {
+            throw new MateriaException(MensagensConstant.ERRO_MATERIA_NAO_ENCONTRADA.getValor(),
+                    HttpStatus.NOT_FOUND);
+
+        }
     }
 
 
