@@ -1,7 +1,7 @@
 package com.aluno.alunosmateriasnotas.service;
 
 import com.aluno.alunosmateriasnotas.dto.MateriaDto;
-import org.springframework.stereotype.Service;
+import com.aluno.alunosmateriasnotas.entity.Materia;
 
 import java.util.List;
 
@@ -9,9 +9,9 @@ public interface IMateriaService {
 
     Boolean cadastrarMateria(MateriaDto materia);
 
-    List<MateriaDto> consultarMaterias();
+    List<Materia> consultarMaterias();
 
-    MateriaDto consultarMateriaPeloId(Long id);
+    Materia consultarMateriaPeloId(Long id);
 
     Boolean alterarMateria(MateriaDto materia);
 

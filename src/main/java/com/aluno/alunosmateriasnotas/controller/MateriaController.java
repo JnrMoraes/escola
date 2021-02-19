@@ -33,15 +33,14 @@ public class MateriaController {
 
     @PostMapping
     public ResponseEntity<Boolean> cadastrarMateria(@Valid @RequestBody MateriaDto materia) {
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(this.materiaService.cadastrarMateria(materia));
-
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(this.materiaService.cadastrarMateria(materia));
     }
 
     @GetMapping
     public ResponseEntity<List<Materia>> buscarTodasMaterias() {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(this.materiaRepository.findAll());
+                .body(this.materiaService.consultarMaterias());
     }
 
     @GetMapping("/{id}")

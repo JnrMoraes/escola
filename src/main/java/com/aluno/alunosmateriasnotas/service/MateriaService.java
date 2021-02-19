@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class MateriaService implements IMateriaService{
+public class MateriaService implements IMateriaService {
 
     @Autowired
     private IMateriaRepository materiaRepository;
@@ -41,12 +41,18 @@ public class MateriaService implements IMateriaService{
     }
 
     @Override
-    public List<MateriaDto> consultarMaterias() {
-        throw new NotYetImplementedException();
+    public List<Materia> consultarMaterias() {
+        try {
+            return this.materiaRepository.findAll();
+
+        } catch (MateriaException e) {
+            throw new MateriaException(MensagensConstant.ERRO_GENERICO.getValor(),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override
-    public MateriaDto consultarMateriaPeloId(Long id) {
+    public Materia consultarMateriaPeloId(Long id) {
         throw new NotYetImplementedException();
     }
 
