@@ -76,7 +76,17 @@ public class MateriaService implements IMateriaService {
 
     @Override
     public Boolean alterarMateria(MateriaDto materia) {
-        throw new NotYetImplementedException();
+
+        try {
+            Materia materiaAtualizada = this.materiaRepository.findById(materia.getId()).get();
+            materiaAtualizada.setNome(materia.getNome());
+            this.materiaRepository.save(materiaAtualizada);
+            return Boolean.TRUE;
+
+        } catch (MateriaException e) {
+            throw new MateriaException(MensagensConstant.ERRO_MATERIA_NAO_ENCONTRADA.getValor(),
+                    HttpStatus.NOT_FOUND);
+        }
     }
 
     @Override

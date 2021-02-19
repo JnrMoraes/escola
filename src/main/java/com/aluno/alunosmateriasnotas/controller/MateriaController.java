@@ -1,7 +1,6 @@
 package com.aluno.alunosmateriasnotas.controller;
 
 import com.aluno.alunosmateriasnotas.dto.MateriaDto;
-import com.aluno.alunosmateriasnotas.entity.Materia;
 import com.aluno.alunosmateriasnotas.rest.client.IMateriaRepository;
 import com.aluno.alunosmateriasnotas.service.IMateriaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +36,6 @@ public class MateriaController {
     }
 
 
-
     @GetMapping
     public ResponseEntity<List<MateriaDto>> buscarTodasMaterias() {
         return ResponseEntity.status(HttpStatus.OK)
@@ -45,30 +43,17 @@ public class MateriaController {
     }
 
 
-
-
     @GetMapping("/{id}")
     public ResponseEntity<MateriaDto> buscarMateriaPeloId(@PathVariable Long id) {
-
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(this.materiaService.consultarMateriaPeloId(id));
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(this.materiaService.consultarMateriaPeloId(id));
 
     }
 
     @PutMapping
-    public ResponseEntity<Boolean> alterarMateria(@RequestBody Materia materia) {
-        try {
-            Materia materiaAtualizada = this.materiaRepository.findById(materia.getId()).get();
-            materiaAtualizada.setNome(materia.getNome());
-            this.materiaRepository.save(materiaAtualizada);
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(true);
-
-        } catch (Exception e) {
-
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(false);
-        }
+    public ResponseEntity<Boolean> alterarMateria(@RequestBody MateriaDto materia) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(this.materiaService.alterarMateria(materia));
     }
 
     @DeleteMapping("/{id}")
