@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/materia")
@@ -37,22 +36,23 @@ public class MateriaController {
                 .body(this.materiaService.cadastrarMateria(materia));
     }
 
+
+
     @GetMapping
     public ResponseEntity<List<MateriaDto>> buscarTodasMaterias() {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(this.materiaService.consultarMaterias());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Optional<Materia>> buscarMateriaPeloId(@PathVariable Long id) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(this.materiaRepository.findById(id));
 
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(this.materiaRepository.findById(id));
-        }
+
+
+    @GetMapping("/{id}")
+    public ResponseEntity<MateriaDto> buscarMateriaPeloId(@PathVariable Long id) {
+
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(this.materiaService.consultarMateriaPeloId(id));
+
     }
 
     @PutMapping

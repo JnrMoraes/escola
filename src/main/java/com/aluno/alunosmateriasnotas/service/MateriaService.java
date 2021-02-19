@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MateriaService implements IMateriaService {
@@ -45,8 +46,9 @@ public class MateriaService implements IMateriaService {
     public List<MateriaDto> consultarMaterias() {
         try {
 
-           return this.mapper.map(this.materiaRepository.findAll(),
-                   new TypeToken<MateriaDto>() {}.getType()) ;
+            return this.mapper.map(this.materiaRepository.findAll(),
+                    new TypeToken<List<MateriaDto>>() {
+                    }.getType());
 
         } catch (MateriaException e) {
             throw new MateriaException(MensagensConstant.ERRO_GENERICO.getValor(),
@@ -56,7 +58,20 @@ public class MateriaService implements IMateriaService {
 
     @Override
     public MateriaDto consultarMateriaPeloId(Long id) {
-        throw new NotYetImplementedException();
+
+        try {
+            Optional<Materia> materiaOptional = this.materiaRepository.findById(id);
+
+            if (materiaOptional.isPresent()) {
+                return this.mapper.map(materiaOptional.get(), MateriaDto.class);
+            }
+            throw new MateriaException(MensagensConstant.ERRO_MATERIA_NAO_ENCONTRADA.getValor(),
+                    HttpStatus.NOT_FOUND);
+
+        } catch (Exception e) {
+            throw new MateriaException(MensagensConstant.ERRO_GENERICO.getValor(),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override
