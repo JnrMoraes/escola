@@ -29,7 +29,6 @@ public class AlunoController {
     @Autowired
     private IAlunoService alunoService;
 
-
     @PostMapping
     public ResponseEntity<Boolean> cadastrarAluno(@Valid @RequestBody AlunoDto aluno) {
         return ResponseEntity.status(HttpStatus.CREATED)
