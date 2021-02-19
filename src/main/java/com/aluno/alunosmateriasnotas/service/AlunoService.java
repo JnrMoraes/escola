@@ -3,9 +3,9 @@ package com.aluno.alunosmateriasnotas.service;
 import com.aluno.alunosmateriasnotas.controller.AlunoController;
 import com.aluno.alunosmateriasnotas.dto.AlunoDto;
 import com.aluno.alunosmateriasnotas.entity.Aluno;
+import com.aluno.alunosmateriasnotas.entity.enums.MensagensConstant;
 import com.aluno.alunosmateriasnotas.exception.AlunoException;
 import com.aluno.alunosmateriasnotas.rest.client.IAlunoRepository;
-import com.aluno.alunosmateriasnotas.rest.client.IMateriaRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,17 +26,11 @@ public class AlunoService implements IAlunoService {
 
     private IAlunoRepository IAlunoRepository;
 
-    private IMateriaRepository IMateriaRepository;
-
     private final ModelMapper mapper;
 
-    private static final String MENSAGEM_ERRO = "Erro interno";
-    private static final String ALUNO_NAO_ENCONTRADO = "Aluno não encontrado";
-
     @Autowired
-    public AlunoService(IAlunoRepository IAlunoRepository, IMateriaRepository IMateriaRepository) {
+    public AlunoService(IAlunoRepository IAlunoRepository) {
         this.IAlunoRepository = IAlunoRepository;
-        this.IMateriaRepository = IMateriaRepository;
         this.mapper = new ModelMapper();
     }
 
@@ -47,7 +41,7 @@ public class AlunoService implements IAlunoService {
             this.IAlunoRepository.save(alunoEntity);
             return Boolean.TRUE;
         } catch (Exception e) {
-            throw new AlunoException(MENSAGEM_ERRO,
+            throw new AlunoException(MensagensConstant.ERRO_GENERICO.getValor(),
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -72,10 +66,12 @@ public class AlunoService implements IAlunoService {
             return Boolean.TRUE;
 
         } catch (AlunoException exception) {
-            throw exception;
+            throw new AlunoException(MensagensConstant.ERRO_ALUNO_NAO_ENCONTRADA.getValor(),
+                    HttpStatus.NOT_FOUND);
 
         } catch (Exception exception) {
-            throw exception;
+            throw new AlunoException(MensagensConstant.ERRO_GENERICO.getValor(),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
 
         }
     }
@@ -98,8 +94,8 @@ public class AlunoService implements IAlunoService {
             return alunoDto;
 
         } catch (Exception e) {
-            throw new AlunoException(MENSAGEM_ERRO,
-                    HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new AlunoException(MensagensConstant.ERRO_ALUNO_NAO_ENCONTRADA.getValor(),
+                    HttpStatus.NOT_FOUND);
         }
     }
 
@@ -114,14 +110,15 @@ public class AlunoService implements IAlunoService {
                 return this.mapper.map(alunoOptional.get(), AlunoDto.class);
 
             }
-            throw new AlunoException(ALUNO_NAO_ENCONTRADO,
+            throw new AlunoException(MensagensConstant.ERRO_ALUNO_NAO_ENCONTRADA.getValor(),
                     HttpStatus.NOT_FOUND);
 
         } catch (AlunoException exception) {
-            throw exception;
+            throw new AlunoException(MensagensConstant.ERRO_ALUNO_NAO_ENCONTRADA.getValor(),
+                    HttpStatus.NOT_FOUND);
 
         } catch (Exception exception) {
-            throw new AlunoException(MENSAGEM_ERRO,
+            throw new AlunoException(MensagensConstant.ERRO_GENERICO.getValor(),
                     HttpStatus.INTERNAL_SERVER_ERROR);
 
         }
@@ -136,10 +133,12 @@ public class AlunoService implements IAlunoService {
             return Boolean.TRUE;
 
         } catch (AlunoException e) {
-            throw e;
+            throw new AlunoException(MensagensConstant.ERRO_ALUNO_NAO_ENCONTRADA.getValor(),
+                    HttpStatus.NOT_FOUND);
 
         } catch (Exception e) {
-            throw e;
+            throw new AlunoException(MensagensConstant.ERRO_GENERICO.getValor(),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
 
         }
     }
