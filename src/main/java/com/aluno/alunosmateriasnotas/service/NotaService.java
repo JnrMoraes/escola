@@ -77,7 +77,24 @@ public class NotaService implements INotaService {
 
     @Override
     public Boolean alterarNota(NotaDto nota) {
-        throw new NotYetImplementedException();
+        try {
+            Nota notaAtualizada = this.notaRepository.findById(nota.getId()).get();
+            notaAtualizada.setBimetre1(nota.getBimetre1());
+            notaAtualizada.setBimetre2(nota.getBimetre2());
+            notaAtualizada.setBimetre3(nota.getBimetre3());
+            notaAtualizada.setBimetre4(nota.getBimetre4());
+            notaAtualizada.setMediaBimentre1(nota.getMediaBimentre1());
+            notaAtualizada.setMediaBimentre2(nota.getMediaBimentre2());
+            notaAtualizada.setMediaBimentre3(nota.getMediaBimentre3());
+            notaAtualizada.setMediaBimentre4(nota.getMediaBimentre4());
+            notaAtualizada.setMediaFinal(nota.getMediaFinal());
+            this.notaRepository.save(notaAtualizada);
+            return Boolean.TRUE;
+
+        } catch (NotaException e) {
+            throw new NotaException(MensagensConstant.ERRO_NOTA_NAO_ENCONTRADA.getValor(),
+                    HttpStatus.NOT_FOUND);
+        }
     }
 
     @Override
