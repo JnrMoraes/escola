@@ -1,6 +1,7 @@
 package com.aluno.alunosmateriasnotas.controller;
 
 import com.aluno.alunosmateriasnotas.dto.MateriaDto;
+import com.aluno.alunosmateriasnotas.entity.enums.MensagensConstant;
 import com.aluno.alunosmateriasnotas.model.Response;
 import com.aluno.alunosmateriasnotas.service.IMateriaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,9 +49,21 @@ public class MateriaController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<MateriaDto> buscarMateriaPeloId(@PathVariable Long id) {
+    public ResponseEntity<Response<MateriaDto>> buscarMateriaPeloId(@PathVariable Long id) {
+
+        Response<MateriaDto> response = new Response<>();
+        response.setData(this.materiaService.consultarMateriaPeloId(id));
+        response.setStatusCode(HttpStatus.OK.value());
+
+        response.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MateriaController.class )
+                .buscarMateriaPeloId(id)).withSelfRel());
+        response.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MateriaController.class )
+                .buscarMateriaPeloId(id)).withRel(MensagensConstant.UDPATE.getValor()));
+        response.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MateriaController.class )
+                .buscarMateriaPeloId(id)).withRel(MensagensConstant.DELETE.getValor()));
+
         return ResponseEntity.status(HttpStatus.OK)
-                .body(this.materiaService.consultarMateriaPeloId(id));
+                .body(response);
     }
 
     @PutMapping

@@ -76,6 +76,10 @@ public class MateriaService implements IMateriaService {
             throw new MateriaException(MensagensConstant.ERRO_MATERIA_NAO_ENCONTRADA.getValor(),
                     HttpStatus.NOT_FOUND);
 
+        } catch (MateriaException e){
+            throw new MateriaException(MensagensConstant.ERRO_MATERIA_NAO_ENCONTRADA.getValor(),
+                    HttpStatus.NOT_FOUND);
+
         } catch (Exception e) {
             throw new MateriaException(MensagensConstant.ERRO_GENERICO.getValor(),
                     HttpStatus.INTERNAL_SERVER_ERROR);

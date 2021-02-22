@@ -10,8 +10,8 @@ public class MateriaException extends RuntimeException {
 
     private final HttpStatus httpStatus;
 
-    public MateriaException(final String mensgaem, final HttpStatus httpStatus ){
-        super(mensgaem);
+    public MateriaException(final String mensagem, final HttpStatus httpStatus ){
+        super(mensagem);
         this.httpStatus = httpStatus;
     }
 

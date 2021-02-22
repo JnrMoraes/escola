@@ -15,7 +15,11 @@ public enum MensagensConstant {
 
 	ERRO_NOTA_NAO_ENCONTRADA("Nota não encontrada."),
 
-	ERRO_ID_INFORMADO("ID não pode ser informado na operação de cadastro.");
+	ERRO_ID_INFORMADO("ID não pode ser informado na operação de cadastro."),
+
+	 DELETE("DELETE"),
+
+	 UDPATE ("UPDATE");
 
 	private final String valor;
 	
