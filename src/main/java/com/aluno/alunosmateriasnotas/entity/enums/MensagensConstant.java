@@ -13,6 +13,8 @@ public enum MensagensConstant {
 
 	ERRO_ALUNO_NAO_ENCONTRADA("Aluno não encontrada."),
 
+	ERRO_NOTA_NAO_ENCONTRADA("Nota não encontrada."),
+
 	ERRO_ID_INFORMADO("ID não pode ser informado na operação de cadastro.");
 
 	private final String valor;

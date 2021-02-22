@@ -1,7 +1,6 @@
 package com.aluno.alunosmateriasnotas.controller;
 
 import com.aluno.alunosmateriasnotas.dto.MateriaDto;
-import com.aluno.alunosmateriasnotas.rest.client.IMateriaRepository;
 import com.aluno.alunosmateriasnotas.service.IMateriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,10 +20,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/materia")
 public class MateriaController {
-
-    // retirar o repository quando finalizar de refatorar
-    @Autowired
-    private IMateriaRepository materiaRepository;
 
     @Autowired
     private IMateriaService materiaService;
@@ -47,7 +42,6 @@ public class MateriaController {
     public ResponseEntity<MateriaDto> buscarMateriaPeloId(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(this.materiaService.consultarMateriaPeloId(id));
-
     }
 
     @PutMapping
@@ -59,7 +53,7 @@ public class MateriaController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deletarMateria(@PathVariable Long id) {
         try {
-            this.materiaRepository.deleteById(id);
+            this.materiaService.excluirMateria(id);
             return ResponseEntity.status(HttpStatus.OK)
                     .body(true);
 
