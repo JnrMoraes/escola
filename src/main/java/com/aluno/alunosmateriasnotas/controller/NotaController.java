@@ -1,6 +1,8 @@
 package com.aluno.alunosmateriasnotas.controller;
 
 import com.aluno.alunosmateriasnotas.dto.NotaDto;
+import com.aluno.alunosmateriasnotas.entity.enums.MensagensConstant;
+import com.aluno.alunosmateriasnotas.exception.NotaException;
 import com.aluno.alunosmateriasnotas.rest.client.INotaRepository;
 import com.aluno.alunosmateriasnotas.service.INotaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,8 +63,9 @@ public class NotaController {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(true);
 
-        } catch (Exception e) {
-            throw e;
+        } catch (NotaException e) {
+            throw new NotaException(MensagensConstant.ERRO_NOTA_NAO_ENCONTRADA.getValor(),
+                    HttpStatus.NOT_FOUND);
 
         }
     }
