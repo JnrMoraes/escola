@@ -33,7 +33,6 @@ public class MateriaController {
                 .body(this.materiaService.cadastrarMateria(materia));
     }
 
-
     @GetMapping
     public ResponseEntity<Response<List<MateriaDto>>> buscarTodasMaterias() {
         Response<List<MateriaDto>> response = new Response<>();

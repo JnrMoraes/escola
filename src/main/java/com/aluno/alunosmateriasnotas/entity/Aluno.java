@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -32,14 +33,10 @@ public class Aluno implements Serializable {
     @JoinColumn(name = "materia_id")
     private List<Materia> materias;
 
-    public Aluno(Long id, String nome) {
+    public Aluno(Long id, String nome, Materia materia) {
         this.id = id;
         this.nome = nome;
+        this.materias = new ArrayList<>();
     }
 
-//    public Aluno(Long id, String nome, List<Materia> materias) {
-//        this.id = id;
-//        this.nome = nome;
-//        this.materias = materias;
-//    }
 }

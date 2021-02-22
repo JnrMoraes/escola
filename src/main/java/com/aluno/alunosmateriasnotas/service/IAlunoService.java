@@ -16,4 +16,6 @@ public interface IAlunoService {
 
     Boolean excluirAluno(Long id);
 
+//    Boolean cadastrarMateriaEmAluno(Aluno aluno, Materia materia);
+
 }

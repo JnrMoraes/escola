@@ -2,6 +2,8 @@ package com.aluno.alunosmateriasnotas.controller;
 
 import com.aluno.alunosmateriasnotas.dto.AlunoDto;
 import com.aluno.alunosmateriasnotas.model.Response;
+import com.aluno.alunosmateriasnotas.rest.client.IAlunoRepository;
+import com.aluno.alunosmateriasnotas.rest.client.IMateriaRepository;
 import com.aluno.alunosmateriasnotas.service.IAlunoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -28,6 +30,26 @@ public class AlunoController {
     private static final String UDPATE = "UPDATE";
     @Autowired
     private IAlunoService alunoService;
+    @Autowired
+    private IMateriaRepository materiaRepository;
+
+    @Autowired
+    private IAlunoRepository alunoRepository;
+
+//    @PostMapping("/materia")
+//    public ResponseEntity<Response<Boolean>> cadastrarMateriaEmAluno(@Valid @RequestBody Aluno aluno, Materia materia){
+//        Response<Boolean> response = new Response<>();
+//        response.setData(this.alunoService.cadastrarMateriaEmAluno(aluno, materia));
+//        response.setStatusCode(HttpStatus.OK.value());
+//        response.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder
+//                .methodOn(AlunoController.class)
+//                .buscarTodosAlunos()).withSelfRel());
+//
+//        return ResponseEntity.status(HttpStatus.OK).body(response);
+//
+//    }
+
+
 
     @PostMapping
     public ResponseEntity<Boolean> cadastrarAluno(@Valid @RequestBody AlunoDto aluno) {
