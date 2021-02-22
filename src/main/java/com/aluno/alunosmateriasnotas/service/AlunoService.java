@@ -85,7 +85,8 @@ public class AlunoService implements IAlunoService {
                     }.getType());
 
             alunoDto.forEach(aluno ->
-                    aluno.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AlunoController.class)
+                    aluno.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(
+                            AlunoController.class)
                         .buscarAlunoPorId(aluno.getId()))
                         .withSelfRel()));
 

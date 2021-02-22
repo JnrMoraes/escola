@@ -1,8 +1,10 @@
 package com.aluno.alunosmateriasnotas.controller;
 
 import com.aluno.alunosmateriasnotas.dto.MateriaDto;
+import com.aluno.alunosmateriasnotas.model.Response;
 import com.aluno.alunosmateriasnotas.service.IMateriaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,9 +34,16 @@ public class MateriaController {
 
 
     @GetMapping
-    public ResponseEntity<List<MateriaDto>> buscarTodasMaterias() {
+    public ResponseEntity<Response<List<MateriaDto>>> buscarTodasMaterias() {
+        Response<List<MateriaDto>> response = new Response<>();
+        response.setData(this.materiaService.consultarMaterias());
+        response.setStatusCode(HttpStatus.OK.value());
+        response.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder
+        .methodOn(MateriaController.class)
+                .buscarTodasMaterias()).withSelfRel());
+
         return ResponseEntity.status(HttpStatus.OK)
-                .body(this.materiaService.consultarMaterias());
+                .body(response);
     }
 
 

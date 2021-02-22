@@ -1,5 +1,6 @@
 package com.aluno.alunosmateriasnotas.service;
 
+import com.aluno.alunosmateriasnotas.controller.MateriaController;
 import com.aluno.alunosmateriasnotas.dto.MateriaDto;
 import com.aluno.alunosmateriasnotas.entity.Materia;
 import com.aluno.alunosmateriasnotas.entity.enums.MensagensConstant;
@@ -8,6 +9,7 @@ import com.aluno.alunosmateriasnotas.rest.client.IMateriaRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -44,10 +46,17 @@ public class MateriaService implements IMateriaService {
     @Override
     public List<MateriaDto> consultarMaterias() {
         try {
-
-            return this.mapper.map(this.materiaRepository.findAll(),
+            List<MateriaDto> materiaDto = this.mapper.map(this.materiaRepository.findAll(),
                     new TypeToken<List<MateriaDto>>() {
                     }.getType());
+
+            materiaDto.forEach( materia ->
+                materia.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(
+                        MateriaController.class )
+                .buscarMateriaPeloId(materia.getId()))
+                .withSelfRel()));
+
+            return materiaDto;
 
         } catch (MateriaException e) {
             throw new MateriaException(MensagensConstant.ERRO_GENERICO.getValor(),
