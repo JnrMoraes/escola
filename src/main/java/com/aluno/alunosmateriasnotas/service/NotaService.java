@@ -6,7 +6,6 @@ import com.aluno.alunosmateriasnotas.entity.enums.MensagensConstant;
 import com.aluno.alunosmateriasnotas.exception.AlunoException;
 import com.aluno.alunosmateriasnotas.exception.NotaException;
 import com.aluno.alunosmateriasnotas.rest.client.INotaRepository;
-import org.hibernate.cfg.NotYetImplementedException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,6 +98,13 @@ public class NotaService implements INotaService {
 
     @Override
     public Boolean excluirNota(Long id) {
-        throw new NotYetImplementedException();
+        try {
+            this.notaRepository.deleteById(id);
+            return Boolean.TRUE;
+
+        } catch (NotaException e) {
+            throw new NotaException(MensagensConstant.ERRO_NOTA_NAO_ENCONTRADA.getValor(),
+                    HttpStatus.NOT_FOUND );
+        }
     }
 }
