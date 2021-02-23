@@ -9,9 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import java.io.Serializable;
-import java.util.List;
 
 @Data
 @Entity
@@ -27,14 +26,13 @@ public class Materia implements Serializable {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String nome;
 
-    @OneToMany
+    @OneToOne
     @JoinColumn(name = "nota_id")
-    private List<Nota> nota;
+    private Nota nota;
 
-
-    public Materia(Long id, String nome) {
+    public Materia(Long id, String nome, Nota nota) {
         this.id = id;
         this.nome = nome;
+        this.nota = nota;
     }
-
 }

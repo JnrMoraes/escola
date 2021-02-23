@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.validation.constraints.NotBlank;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -17,5 +16,5 @@ public class MateriaDto extends RepresentationModel<MateriaDto> {
     @NotBlank(message = "Informar nome da Matéria")
     private String nome;
 
-    private List<Nota> nota;
+    private Nota nota;
 }
