@@ -9,12 +9,17 @@ import com.aluno.alunosmateriasnotas.rest.client.INotaRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@CacheConfig(cacheNames = "nota")
 @Service
 public class NotaService implements INotaService {
 
@@ -41,6 +46,7 @@ public class NotaService implements INotaService {
         }
     }
 
+    @CachePut(unless = "result.size()<3")
     @Override
     public List<NotaDto> consultarNotas() throws AlunoException {
         try {
@@ -55,13 +61,14 @@ public class NotaService implements INotaService {
         }
     }
 
+    @Cacheable(key = "#id")
     @Override
     public NotaDto consultarNotaPeloId(Long id) {
 
         try {
             Optional<Nota> notaOptional = this.notaRepository.findById(id);
 
-            if(notaOptional.isPresent()){
+            if (notaOptional.isPresent()) {
                 return this.mapper.map(notaOptional.get(), NotaDto.class);
 
             }
@@ -74,8 +81,7 @@ public class NotaService implements INotaService {
         }
     }
 
-
-
+    @CacheEvict(key = "nota.id")
     @Override
     public Boolean alterarNota(NotaDto nota) {
         try {
@@ -106,7 +112,9 @@ public class NotaService implements INotaService {
 
         } catch (NotaException e) {
             throw new NotaException(MensagensConstant.ERRO_NOTA_NAO_ENCONTRADA.getValor(),
-                    HttpStatus.NOT_FOUND );
+                    HttpStatus.NOT_FOUND);
         }
     }
+
+
 }

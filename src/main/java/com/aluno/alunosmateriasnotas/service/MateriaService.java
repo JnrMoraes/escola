@@ -9,6 +9,10 @@ import com.aluno.alunosmateriasnotas.rest.client.IMateriaRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -16,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+@CacheConfig(cacheNames = "materia")
 @Service
 public class MateriaService implements IMateriaService {
 
@@ -43,6 +48,7 @@ public class MateriaService implements IMateriaService {
         }
     }
 
+    @CachePut(unless = "result.size()<3")
     @Override
     public List<MateriaDto> consultarMaterias() {
         try {
@@ -50,11 +56,11 @@ public class MateriaService implements IMateriaService {
                     new TypeToken<List<MateriaDto>>() {
                     }.getType());
 
-            materiaDto.forEach( materia ->
-                materia.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(
-                        MateriaController.class )
-                .buscarMateriaPeloId(materia.getId()))
-                .withSelfRel()));
+            materiaDto.forEach(materia ->
+                    materia.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(
+                            MateriaController.class)
+                            .buscarMateriaPeloId(materia.getId()))
+                            .withSelfRel()));
 
             return materiaDto;
 
@@ -64,6 +70,7 @@ public class MateriaService implements IMateriaService {
         }
     }
 
+    @Cacheable(key = "#id")
     @Override
     public MateriaDto consultarMateriaPeloId(Long id) {
 
@@ -76,7 +83,7 @@ public class MateriaService implements IMateriaService {
             throw new MateriaException(MensagensConstant.ERRO_MATERIA_NAO_ENCONTRADA.getValor(),
                     HttpStatus.NOT_FOUND);
 
-        } catch (MateriaException e){
+        } catch (MateriaException e) {
             throw new MateriaException(MensagensConstant.ERRO_MATERIA_NAO_ENCONTRADA.getValor(),
                     HttpStatus.NOT_FOUND);
 
@@ -86,6 +93,7 @@ public class MateriaService implements IMateriaService {
         }
     }
 
+    @CacheEvict(key = "materia.id")
     @Override
     public Boolean alterarMateria(MateriaDto materia) {
 

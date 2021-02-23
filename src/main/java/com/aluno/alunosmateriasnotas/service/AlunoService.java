@@ -55,24 +55,6 @@ public class AlunoService implements IAlunoService {
 //            @CacheEvict(value = "materia", key = "#aluno.id")
 //    }
 //    )
-//    @Override
-//    public Boolean cadastrarMateriaEmAluno(Aluno aluno, Materia materia) {
-//        this.consultarAlunoPeloId(aluno.getId());
-//        this.materiaRepository.findById(materia.getId());
-//
-//        Aluno alunoComMateria = new Aluno();
-//        List<Materia> materias = new ArrayList<>();
-//
-//        if(!alunoComMateria.getMaterias().isEmpty()){
-//            for (Materia materia1: materias){
-//                alunoComMateria.setMaterias(materias);
-//            }
-//        }
-//        this.IAlunoRepository.save(alunoComMateria);
-//
-//        return Boolean.TRUE;
-//    }
-
     @CacheEvict(key = "#aluno.id")
     @Override
     public Boolean alterarAluno(AlunoDto aluno) {
@@ -108,8 +90,8 @@ public class AlunoService implements IAlunoService {
             alunoDto.forEach(aluno ->
                     aluno.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(
                             AlunoController.class)
-                        .buscarAlunoPorId(aluno.getId()))
-                        .withSelfRel()));
+                            .buscarAlunoPorId(aluno.getId()))
+                            .withSelfRel()));
 
             return alunoDto;
 
@@ -162,6 +144,7 @@ public class AlunoService implements IAlunoService {
 
         }
     }
+
 
 }
 

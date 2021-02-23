@@ -30,7 +30,7 @@ public class NotaModalService implements INotaModalService {
 
     @Override
     public Boolean associarNotaEmMateria(NotaModal notaModal) {
-        try {
+        try { // ver pq o mapper esta sendo nulo na converção do repository
 //            MateriaDto materiaDto = this.mapper.map(this.materiaRepository.findById(notaModal.getId()), MateriaDto.class);
             MateriaDto materiaDto = this.materiaService.consultarMateriaPeloId(notaModal.getId());
 
