@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class AlunoModal {
+public class MateriaModal {
 
     private Long id;
 
