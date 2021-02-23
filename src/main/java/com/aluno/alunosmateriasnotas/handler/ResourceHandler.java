@@ -1,6 +1,8 @@
 package com.aluno.alunosmateriasnotas.handler;
 
 import com.aluno.alunosmateriasnotas.exception.AlunoException;
+import com.aluno.alunosmateriasnotas.exception.MateriaException;
+import com.aluno.alunosmateriasnotas.exception.NotaException;
 import com.aluno.alunosmateriasnotas.model.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +33,7 @@ public class ResourceHandler {
         response.setData(error);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(response);
+
     }
 
 
@@ -40,7 +43,27 @@ public class ResourceHandler {
         response.setStatusCode(exception.getHttpStatus().value());
         response.setData(exception.getMessage());
 
-        return ResponseEntity.status(exception.getHttpStatus())
-                .body(response);
+        return ResponseEntity.status(exception.getHttpStatus()).body(response);
+
     }
+
+    @ExceptionHandler(MateriaException.class)
+    public ResponseEntity<Response<String>> handlerMateriaException(MateriaException exception) {
+        Response<String> response = new Response<>();
+        response.setStatusCode(exception.getHttpStatus().value());
+        response.setData(exception.getMessage());
+        return ResponseEntity.status(exception.getHttpStatus()).body(response);
+
+    }
+
+    @ExceptionHandler(NotaException.class)
+    public ResponseEntity<Response<String>> handlerNotaException(NotaException exception) {
+        Response<String> response = new Response<>();
+        response.setStatusCode(exception.getHttpStatus().value());
+        response.setData(exception.getMessage());
+        return ResponseEntity.status(exception.getHttpStatus()).body(response);
+
+    }
+
+
 }
