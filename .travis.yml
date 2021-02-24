@@ -1,0 +1,9 @@
+languagem: java
+jdk: java
+  -oraclejdk11
+deploy:
+  provider: heroku
+  api_key:
+    secure:
+on:
+  repo: https://github.com/JnrMoraes/escola
