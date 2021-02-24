@@ -11,7 +11,6 @@ import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
@@ -48,7 +47,6 @@ public class MateriaService implements IMateriaService {
         }
     }
 
-    @CachePut(unless = "result.size()<3")
     @Override
     public List<MateriaDto> consultarMaterias() {
         try {
