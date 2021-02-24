@@ -1,3 +1,5 @@
+languagem: java
+
 dist: xenial
 
 jdk:
