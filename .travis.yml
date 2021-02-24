@@ -1,4 +1,5 @@
 languagem: java
+dist: xenial
 jdk: java
   - openjdk11
   - openjdk-ea
