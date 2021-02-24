@@ -1,8 +1,8 @@
-languagem: java
+dist: xenial
 
 jdk:
-  - oraclejdk11
   - openjdk11
+  - oraclejdk11
 
 deploy:
   provider: heroku
