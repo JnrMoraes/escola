@@ -1,12 +1,10 @@
 languagem: java
-dist: xenial
+
 jdk:
   - oraclejdk8
   - oraclejdk11
   - openjdk10
   - openjdk11
-install: true
-script: ./travis/build.sh
 
 deploy:
   provider: heroku
