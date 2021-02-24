@@ -3,6 +3,9 @@ dist: xenial
 jdk: java
   - openjdk11
   - openjdk-ea
+install: true
+script: ./travis/build.sh
+
 deploy:
   provider: heroku
   api_key:
