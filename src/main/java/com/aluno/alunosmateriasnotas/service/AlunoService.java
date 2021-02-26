@@ -6,7 +6,6 @@ import com.aluno.alunosmateriasnotas.entity.Aluno;
 import com.aluno.alunosmateriasnotas.entity.enums.MensagensConstant;
 import com.aluno.alunosmateriasnotas.exception.AlunoException;
 import com.aluno.alunosmateriasnotas.rest.client.IAlunoRepository;
-import com.aluno.alunosmateriasnotas.rest.client.IMateriaRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +25,6 @@ import java.util.Optional;
 public class AlunoService implements IAlunoService {
 
     private IAlunoRepository IAlunoRepository;
-
-    private IMateriaRepository materiaRepository;
 
     private final ModelMapper mapper;
 

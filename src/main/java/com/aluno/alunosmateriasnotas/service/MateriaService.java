@@ -23,11 +23,11 @@ import java.util.Optional;
 @Service
 public class MateriaService implements IMateriaService {
 
-    @Autowired
     private IMateriaRepository materiaRepository;
 
     private final ModelMapper mapper;
 
+    @Autowired
     public MateriaService(IMateriaRepository materiaRepository) {
         this.materiaRepository = materiaRepository;
         this.mapper = new ModelMapper();

@@ -17,13 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class MateriaModalController {
 
     @Autowired
-    private IMateriaModalService alunoService;
-
+    private IMateriaModalService materiaModalService;
 
     @PostMapping
     public ResponseEntity<Response<Boolean>> associarMateriasEmAluno(@RequestBody MateriaModal materiaModal) {
         Response<Boolean> response = new Response<>();
-        response.setData(this.alunoService.associarMateriasEmAluno(materiaModal));
+        response.setData(this.materiaModalService.associarMateriasEmAluno(materiaModal));
         response.setStatusCode(HttpStatus.CREATED.value());
         response.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MateriaModalController.class )
                 .associarMateriasEmAluno(materiaModal)).withSelfRel());

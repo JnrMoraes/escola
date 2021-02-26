@@ -22,11 +22,12 @@ import java.util.Optional;
 @Service
 public class NotaService implements INotaService {
 
-    @Autowired
+
     private INotaRepository notaRepository;
 
     private final ModelMapper mapper;
 
+    @Autowired
     public NotaService(INotaRepository notaRepository) {
         this.notaRepository = notaRepository;
         this.mapper = new ModelMapper();

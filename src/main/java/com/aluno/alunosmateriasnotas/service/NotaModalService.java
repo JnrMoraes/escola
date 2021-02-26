@@ -8,18 +8,16 @@ import com.aluno.alunosmateriasnotas.entity.enums.MensagensConstant;
 import com.aluno.alunosmateriasnotas.exception.NotaException;
 import com.aluno.alunosmateriasnotas.rest.client.IMateriaRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
 public class NotaModalService implements INotaModalService {
 
-    @Autowired
     private MateriaService materiaService;
-    @Autowired
+
     private INotaService notaService;
-    @Autowired
+
     private IMateriaRepository materiaRepository;
 
     private ModelMapper mapper;
