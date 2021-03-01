@@ -14,6 +14,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+
 @Data
 @Entity
 @NoArgsConstructor
@@ -22,13 +24,14 @@ public class Aluno implements Serializable {
 
     private static final long serialVersionUID = 837052379084307171L;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonInclude(NON_NULL)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String nome;
 
+    @JsonInclude(NON_NULL)
     @OneToMany
     @JoinColumn(name = "materia_id")
     private List<Materia> materias;
