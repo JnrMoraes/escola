@@ -20,4 +20,5 @@ public class AlunoDto extends RepresentationModel<AlunoDto> {
 
     private List<Materia> materias;
 
+
 }

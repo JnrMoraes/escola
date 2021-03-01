@@ -2,8 +2,8 @@ package com.aluno.alunosmateriasnotas.controller;
 
 
 import com.aluno.alunosmateriasnotas.dto.AlunoDto;
-import com.aluno.alunosmateriasnotas.dto.MateriaDto;
 import com.aluno.alunosmateriasnotas.entity.Materia;
+import com.aluno.alunosmateriasnotas.entity.Nota;
 import com.aluno.alunosmateriasnotas.model.Response;
 import com.aluno.alunosmateriasnotas.service.IAlunoService;
 import org.junit.jupiter.api.BeforeAll;
@@ -43,48 +43,49 @@ class AlunoControllerUnitTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    private static AlunoDto alunoDto;
+    private static Materia materia;
+    private static Nota nota;
+
+
     @BeforeAll
     public static void init() {
 
-        MateriaDto materiaDto = new MateriaDto();
-        materiaDto.setId(2L);
-        materiaDto.setNome("Ciencias");
+        nota = new Nota();
+        nota.setBimetre1(new double[]{7.9, 7.7, 9.8, 6.9});
+        nota.setMediaBimentre1(7.9);
 
-        Materia materia1 = new Materia();
-        materia1.setNome("Portugues");
 
-        Materia materia2 = new Materia();
-        materia2.setNome("Matemática");
+        materia = new Materia();
+        materia.setId(2L);
+        materia.setNome("Portugues");
+        materia.setNota(nota);
 
         List<Materia> materias = new ArrayList<>();
-        materias.add(materia1);
-        materias.add(materia2);
+        materias.add(materia);
 
-        AlunoDto alunoDto = new AlunoDto();
+        alunoDto = new AlunoDto();
         alunoDto.setId(1L);
         alunoDto.setNome("Jose de Jesus");
         alunoDto.setMaterias(materias);
 
     }
 
-
     @Test
+//    @Ignore
     void testCadastrarAluno() {
-        AlunoDto alunoDto = new AlunoDto();
-        alunoDto.setId(1L);
-        alunoDto.setNome("Jose de Jesus");
 
-        Mockito.when(this.alunoService.cadastrarAluno(alunoDto))
-                .thenReturn(Boolean.TRUE);
+        Mockito.when(this.alunoService.cadastrarAluno(alunoDto)).thenReturn(Boolean.TRUE);
 
         HttpEntity<AlunoDto> request = new HttpEntity<>(alunoDto);
 
-        ResponseEntity<Response<Boolean>> alunoCriado = restTemplate
-                .exchange("http://localhost:" + this.port + "/aluno",HttpMethod.POST, request,
-                        new ParameterizedTypeReference<Response<Boolean>>(){
+        ResponseEntity<Response<Boolean>> aluno = restTemplate.exchange(
+                "http://localhost:" + this.port + "/aluno", HttpMethod.POST, request,
+                        new ParameterizedTypeReference<Response<Boolean>>() {
                         });
-        assertNotNull(alunoCriado.getBody().getData());
-        assertEquals(201, alunoCriado.getBody().getStatusCode());
+
+        assertNotNull(aluno.getBody().getData());
+        assertEquals(201, aluno.getBody().getStatusCode());
     }
 
     @Test
@@ -99,14 +100,46 @@ class AlunoControllerUnitTest {
         assertNotNull(alunos.getBody().getData());
         assertEquals(200, alunos.getBody().getStatusCode());
 
+    } @Test
+    void testBuscarAlunoPorId() {
+
+        Mockito.when(this.alunoService.consultarAlunoPeloId(1L)).thenReturn(alunoDto);
+
+        ResponseEntity<Response<AlunoDto>> aluno = restTemplate.exchange(
+                "http://localhost:" + this.port + "/aluno/1", HttpMethod.GET, null,
+                        new ParameterizedTypeReference<Response<AlunoDto>>() {
+                        });
+        assertNotNull(aluno.getBody().getData());
+        assertEquals(200, aluno.getBody().getStatusCode());
+
     }
 
     @Test
-    void alterarAluno() {
+    void testalterarAluno() {
+        Mockito.when(this.alunoService.cadastrarAluno(alunoDto)).thenReturn(Boolean.TRUE);
+
+        HttpEntity<AlunoDto> request = new HttpEntity<>(alunoDto);
+
+        ResponseEntity<Response<Boolean>> aluno = restTemplate
+                .exchange("http://localhost:" + this.port + "/aluno", HttpMethod.PUT, request,
+                        new ParameterizedTypeReference<Response<Boolean>>() {
+                        });
+        assertNotNull(aluno.getBody().getData());
+        assertEquals(200, aluno.getBody().getStatusCode());
+
     }
 
     @Test
-    void deletarAluno() {
+    void testdeletarAluno() {
+        Mockito.when(this.alunoService.excluirAluno(1L)).thenReturn(Boolean.TRUE);
+
+        ResponseEntity<Response<Boolean>> aluno = restTemplate.exchange(
+                "http://localhost:" + this.port + "/aluno/1", HttpMethod.DELETE, null,
+                        new ParameterizedTypeReference<Response<Boolean>>() {
+                        });
+        assertNotNull(aluno.getBody().getData());
+        assertEquals(200, aluno.getBody().getStatusCode());
+
     }
 
 }
