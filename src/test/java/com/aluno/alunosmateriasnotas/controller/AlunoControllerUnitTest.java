@@ -81,8 +81,8 @@ class AlunoControllerUnitTest {
 
         ResponseEntity<Response<Boolean>> aluno = restTemplate.exchange(
                 "http://localhost:" + this.port + "/aluno", HttpMethod.POST, request,
-                        new ParameterizedTypeReference<Response<Boolean>>() {
-                        });
+                new ParameterizedTypeReference<Response<Boolean>>() {
+                });
 
         assertNotNull(aluno.getBody().getData());
         assertEquals(201, aluno.getBody().getStatusCode());
@@ -100,15 +100,17 @@ class AlunoControllerUnitTest {
         assertNotNull(alunos.getBody().getData());
         assertEquals(200, alunos.getBody().getStatusCode());
 
-    } @Test
+    }
+
+    @Test
     void testBuscarAlunoPorId() {
 
         Mockito.when(this.alunoService.consultarAlunoPeloId(1L)).thenReturn(alunoDto);
 
         ResponseEntity<Response<AlunoDto>> aluno = restTemplate.exchange(
                 "http://localhost:" + this.port + "/aluno/1", HttpMethod.GET, null,
-                        new ParameterizedTypeReference<Response<AlunoDto>>() {
-                        });
+                new ParameterizedTypeReference<Response<AlunoDto>>() {
+                });
         assertNotNull(aluno.getBody().getData());
         assertEquals(200, aluno.getBody().getStatusCode());
 
@@ -135,8 +137,8 @@ class AlunoControllerUnitTest {
 
         ResponseEntity<Response<Boolean>> aluno = restTemplate.exchange(
                 "http://localhost:" + this.port + "/aluno/1", HttpMethod.DELETE, null,
-                        new ParameterizedTypeReference<Response<Boolean>>() {
-                        });
+                new ParameterizedTypeReference<Response<Boolean>>() {
+                });
         assertNotNull(aluno.getBody().getData());
         assertEquals(200, aluno.getBody().getStatusCode());
 
