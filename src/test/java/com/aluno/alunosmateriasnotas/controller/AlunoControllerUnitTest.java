@@ -73,7 +73,7 @@ class AlunoControllerUnitTest {
 
     @Test
 //    @Ignore
-    void testCadastrarAluno() {
+    void testCadastrarAluno() {//Não esta passando
 
         Mockito.when(this.alunoService.cadastrarAluno(alunoDto)).thenReturn(Boolean.TRUE);
 
@@ -117,7 +117,7 @@ class AlunoControllerUnitTest {
     }
 
     @Test
-    void testalterarAluno() {
+    void testalterarAluno() {//Não esta passando
         Mockito.when(this.alunoService.cadastrarAluno(alunoDto)).thenReturn(Boolean.TRUE);
 
         HttpEntity<AlunoDto> request = new HttpEntity<>(alunoDto);
@@ -132,7 +132,7 @@ class AlunoControllerUnitTest {
     }
 
     @Test
-    void testdeletarAluno() {
+    void testdeletarAluno() {//Não esta passando
         Mockito.when(this.alunoService.excluirAluno(1L)).thenReturn(Boolean.TRUE);
 
         ResponseEntity<Response<Boolean>> aluno = restTemplate.exchange(

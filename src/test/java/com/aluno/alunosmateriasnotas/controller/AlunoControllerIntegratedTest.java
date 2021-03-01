@@ -26,6 +26,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @RunWith(JUnitPlatform.class)
@@ -109,15 +110,20 @@ class AlunoControllerIntegratedTest {
     @Test
     @Ignore
 
-    void testdeletarAluno() {
+    void testdeletarAluno() { //Não esta passando
 
         List<Aluno> alunos = this.alunoRepository.findAll();
-        Long id = alunos.get(1).getId();
+        Long id = alunos.get(0).getId();
 
         ResponseEntity<Response<Boolean>> aluno = restTemplate.exchange(
                 "http://localhost:" + this.port + "/aluno/" + id, HttpMethod.DELETE, null,
                         new ParameterizedTypeReference<Response<Boolean>>() {
                         });
+
+        List<Aluno> listAlunosAtualizado = this.alunoRepository.findAll();
+
+        assertTrue(aluno.getBody().getData());
+        assertEquals(2, listAlunosAtualizado.size());
         assertEquals(200, aluno.getBody().getStatusCode());
 
     }
