@@ -12,6 +12,8 @@ public enum MensagensConstant {
 	ERRO_MATERIA_NAO_ENCONTRADA("Matéria não encontrada."),
 
 	ERRO_ALUNO_NAO_ENCONTRADA("Aluno não encontrada."),
+	ERRO_ID_ALUNO_INFORMADO("Cadastro esta com id informado."),
+	ERRO_ALUNO_ENCONTRADO("Aluno já consta em base de dados."),
 
 	ERRO_NOTA_NAO_ENCONTRADA("Nota não encontrada."),
 

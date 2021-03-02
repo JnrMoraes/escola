@@ -109,7 +109,6 @@ class AlunoControllerIntegratedTest {
 
     @Test
     @Ignore
-
     void testdeletarAluno() { //Não esta passando
 
         List<Aluno> alunos = this.alunoRepository.findAll();

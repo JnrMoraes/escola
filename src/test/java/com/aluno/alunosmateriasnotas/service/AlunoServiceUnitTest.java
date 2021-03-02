@@ -4,6 +4,8 @@ import com.aluno.alunosmateriasnotas.dto.AlunoDto;
 import com.aluno.alunosmateriasnotas.entity.Aluno;
 import com.aluno.alunosmateriasnotas.entity.Materia;
 import com.aluno.alunosmateriasnotas.entity.Nota;
+import com.aluno.alunosmateriasnotas.entity.enums.MensagensConstant;
+import com.aluno.alunosmateriasnotas.exception.AlunoException;
 import com.aluno.alunosmateriasnotas.rest.client.IAlunoRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -15,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,6 +26,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.times;
 
@@ -49,6 +53,8 @@ class AlunoServiceUnitTest {
         aluno.setNome("Jose de Jesus");
 
     }
+
+    //cenarios de sucesso
 
     @Test
     void cadastrarAluno() {
@@ -125,10 +131,120 @@ class AlunoServiceUnitTest {
         Mockito.verify(this.alunoRepository,times(1)).deleteById(1L);
 
     }
+
+    // cenarios de throw classe exception
+    @Test
+    void alterarAlunoException() {
+        AlunoDto alunoDto = new AlunoDto();
+        alunoDto.setId(1L);
+        alunoDto.setNome("Jose de Jesus");
+
+        Mockito.when(this.alunoRepository.findById(1L)).thenReturn( Optional.empty());
+
+        AlunoException alunoException;
+
+        alunoException = assertThrows(AlunoException.class, ()->{
+            this.alunoService.alterarAluno(alunoDto);
+        });
+
+        assertEquals(HttpStatus.NOT_FOUND, alunoException.getHttpStatus());
+        assertEquals(MensagensConstant.ERRO_ALUNO_NAO_ENCONTRADA.getValor(), alunoException.getMessage());
+
+        Mockito.verify(this.alunoRepository,times(1)).findById(1L);
+        Mockito.verify(this.alunoRepository,times(0)).save(aluno);
+
+    }
+
+    @Test
+    void excluirAlunoException() {
+        AlunoDto alunoDto = new AlunoDto();
+        alunoDto.setId(1L);
+        alunoDto.setNome("Jose de Jesus");
+
+        Mockito.when(this.alunoRepository.findById(1L)).thenReturn( Optional.empty());
+
+        AlunoException alunoException;
+
+        alunoException = assertThrows(AlunoException.class, ()->{
+            this.alunoService.alterarAluno(alunoDto);
+        });
+
+        assertEquals(HttpStatus.NOT_FOUND, alunoException.getHttpStatus());
+        assertEquals(MensagensConstant.ERRO_ALUNO_NAO_ENCONTRADA.getValor(), alunoException.getMessage());
+
+        Mockito.verify(this.alunoRepository,times(1)).findById(1L);
+        Mockito.verify(this.alunoRepository,times(0)).deleteById(1L);
+
+    }
+
+    @Test
+    void cadastrarAlunoExceptionGenerica() {
+        AlunoDto alunoDto = new AlunoDto();
+        alunoDto.setId(1L);
+        alunoDto.setNome("Jose de Jesus");
+
+        AlunoException alunoException;
+
+        alunoException = assertThrows(AlunoException.class, ()->{
+            this.alunoService.cadastrarAluno(alunoDto);
+        });
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, alunoException.getHttpStatus());
+        assertEquals(MensagensConstant.ERRO_GENERICO.getValor(), alunoException.getMessage());
+
+//        Mockito.verify(this.alunoRepository,times(1)).findById(1L);
+        Mockito.verify(this.alunoRepository,times(0)).save(aluno);
+
+    }
+    @Test
+    void cadastrarAlunoExceptionAlunoDtoTemUmId() {
+        AlunoDto alunoDto = new AlunoDto();
+        alunoDto.setId(1L);
+        alunoDto.setNome("Jose de Jesus");
+
+        AlunoException alunoException;
+
+        alunoException = assertThrows(AlunoException.class, ()->{
+            this.alunoService.cadastrarAluno(alunoDto);
+        });
+
+        assertEquals(MensagensConstant.ERRO_ID_ALUNO_INFORMADO.getValor(), alunoException.getMessage());
+        assertEquals(HttpStatus.BAD_REQUEST, alunoException.getHttpStatus());
+
+        Mockito.verify(this.alunoRepository,times(0)).findById(1L);
+        Mockito.verify(this.alunoRepository,times(0)).save(aluno);
+
+    }
+
+    @Test
+    void cadastrarAlunoExceptionQuandoAlunoDtoTemUmIdExistente() { // ainda não estou conseguindo comparar o id no test
+        Aluno aluno = new Aluno();
+        aluno.setId(1L);
+        aluno.setNome("Jose de Jesus");
+
+        AlunoDto alunoDto = new AlunoDto();
+        alunoDto.setId(1L);
+        alunoDto.setNome("Jose de Jesus");
+
+//        Mockito.when(this.alunoRepository.find(aluno.getId())).thenReturn(Optional.of(aluno));
+
+        AlunoException alunoException;
+
+        alunoException = assertThrows(AlunoException.class, ()->{
+            this.alunoService.cadastrarAluno(alunoDto);
+        });
+
+
+        assertEquals(MensagensConstant.ERRO_ALUNO_ENCONTRADO.getValor(), alunoException.getMessage());
+        assertEquals(HttpStatus.BAD_REQUEST, alunoException.getHttpStatus());
+
+        Mockito.verify(this.alunoRepository,times(1)).findById(1L);
+        Mockito.verify(this.alunoRepository,times(0)).save(aluno);
+
+    }
+
 }
 
-//cenarios de sucesso
 
-// cenarios de throw classe exception
 
 // cenarios de throw exception - generica ou casos inesperados

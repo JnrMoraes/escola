@@ -24,23 +24,37 @@ import java.util.Optional;
 @Service
 public class AlunoService implements IAlunoService {
 
-    private IAlunoRepository IAlunoRepository;
+    private IAlunoRepository alunoRepository;
 
     private final ModelMapper mapper;
 
     @Autowired
-    public AlunoService(IAlunoRepository IAlunoRepository) {
-        this.IAlunoRepository = IAlunoRepository;
+    public AlunoService(IAlunoRepository alunoRepository) {
+        this.alunoRepository = alunoRepository;
         this.mapper = new ModelMapper();
     }
 
     @Override
     public Boolean cadastrarAluno(AlunoDto aluno) {
         try {
-            Aluno alunoEntity = this.mapper.map(aluno, Aluno.class);
-            this.IAlunoRepository.save(alunoEntity);
-            return Boolean.TRUE;
-        } catch (Exception e) {
+
+            if(this.alunoRepository.findById(aluno.getId()).isPresent()){
+                if(this.alunoRepository.findById(aluno.getId()).equals(aluno.getId()))
+                throw new AlunoException(MensagensConstant.ERRO_ALUNO_ENCONTRADO.getValor(),
+                        HttpStatus.BAD_REQUEST);
+            }
+
+            if(aluno.getId() != null){
+                throw new AlunoException(MensagensConstant.ERRO_ID_ALUNO_INFORMADO.getValor(),
+                        HttpStatus.BAD_REQUEST);
+            }
+
+            return this.cadastrarOuAtualizarAuluno(aluno);
+
+        } catch (AlunoException e) {
+            throw e;
+
+        }catch (Exception e) {
             throw new AlunoException(MensagensConstant.ERRO_GENERICO.getValor(),
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -61,7 +75,7 @@ public class AlunoService implements IAlunoService {
 
             Aluno alunoAtualizado = this.mapper.map(aluno, Aluno.class);
 
-            this.IAlunoRepository.save(alunoAtualizado);
+            this.alunoRepository.save(alunoAtualizado);
 
             return Boolean.TRUE;
 
@@ -80,7 +94,7 @@ public class AlunoService implements IAlunoService {
     @Override
     public List<AlunoDto> consultarAlunos() {
         try {
-            List<AlunoDto> alunoDto = this.mapper.map(this.IAlunoRepository.findAll(),
+            List<AlunoDto> alunoDto = this.mapper.map(this.alunoRepository.findAll(),
                     new TypeToken<List<AlunoDto>>() {
                     }.getType());
 
@@ -102,7 +116,7 @@ public class AlunoService implements IAlunoService {
     @Override
     public AlunoDto consultarAlunoPeloId(Long id) {
         try {
-            Optional<Aluno> alunoOptional = this.IAlunoRepository.findById(id);
+            Optional<Aluno> alunoOptional = this.alunoRepository.findById(id);
 
             if (alunoOptional.isPresent()) {
 
@@ -128,7 +142,7 @@ public class AlunoService implements IAlunoService {
 
         try {
             this.consultarAlunoPeloId(id);
-            this.IAlunoRepository.deleteById(id);
+            this.alunoRepository.deleteById(id);
             return Boolean.TRUE;
 
         } catch (AlunoException e) {
@@ -142,6 +156,11 @@ public class AlunoService implements IAlunoService {
         }
     }
 
+    private Boolean cadastrarOuAtualizarAuluno(AlunoDto alunoDto) {
+        Aluno aluno = this.mapper.map(alunoDto, Aluno.class);
+        this.alunoRepository.save(aluno);
+        return Boolean.TRUE;
+    }
 
 }
 
